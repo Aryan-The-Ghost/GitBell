@@ -1,6 +1,12 @@
-// Background service worker for monitoring GitHub repositories
+// Background script for monitoring GitHub repositories
+// Compatible with Chrome, Edge, and Firefox
 
-importScripts('storage.js', 'github-api.js');
+// Import modules (ES module syntax for MV3)
+import { Storage } from './storage.js';
+import { GitHubAPI } from './github-api.js';
+
+// Browser detection for API compatibility
+const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 
 // Initialize extension
 chrome.runtime.onInstalled.addListener(async (details) => {
@@ -141,19 +147,27 @@ async function sendNotification(repo, issue) {
 
     const priority = isBeginnerFriendly ? 2 : 1;
 
-    chrome.notifications.create({
+    // Notification options - Firefox doesn't support buttons or requireInteraction
+    const isFirefox = typeof browser !== 'undefined';
+    const notificationOptions = {
         type: 'basic',
         iconUrl: 'icons/icon128.png',
         title: `🆕 New Issue in ${repo.fullName}`,
         message: `#${issue.number}: ${issue.title}${labelText}${isBeginnerFriendly ? '\n⭐ Good First Issue!' : ''}`,
-        priority: priority,
-        requireInteraction: isBeginnerFriendly,
-        buttons: [
-            { title: 'View Issue' }
-        ]
-    }, (notificationId) => {
+        priority: priority
+    };
+
+    // Add Chrome-specific options (not supported in Firefox)
+    if (!isFirefox) {
+        notificationOptions.requireInteraction = isBeginnerFriendly;
+        notificationOptions.buttons = [{ title: 'View Issue' }];
+    }
+
+    chrome.notifications.create(notificationOptions, (notificationId) => {
         // Store notification ID with issue URL for click handling
-        notificationUrlMap.set(notificationId, issue.html_url);
+        if (notificationId) {
+            notificationUrlMap.set(notificationId, issue.html_url);
+        }
     });
 }
 
@@ -170,17 +184,19 @@ chrome.notifications.onClicked.addListener((notificationId) => {
     }
 });
 
-// Handle notification button clicks
-chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
-    if (buttonIndex === 0) { // View Issue button
-        const url = notificationUrlMap.get(notificationId);
-        if (url) {
-            chrome.tabs.create({ url });
-            chrome.notifications.clear(notificationId);
-            notificationUrlMap.delete(notificationId);
+// Handle notification button clicks (Chrome/Edge only - not supported in Firefox)
+if (typeof browser === 'undefined' && chrome.notifications.onButtonClicked) {
+    chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
+        if (buttonIndex === 0) { // View Issue button
+            const url = notificationUrlMap.get(notificationId);
+            if (url) {
+                chrome.tabs.create({ url });
+                chrome.notifications.clear(notificationId);
+                notificationUrlMap.delete(notificationId);
+            }
         }
-    }
-});
+    });
+}
 
 // Listen for messages from popup/settings
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

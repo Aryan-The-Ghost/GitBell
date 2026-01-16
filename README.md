@@ -6,7 +6,7 @@
   Never miss a GitHub issue again. Get instant notifications when new issues are posted to repositories you track.
   
   <img src="https://img.shields.io/badge/Manifest-V3-blue" alt="Manifest V3"/>
-  <img src="https://img.shields.io/badge/Browser-Chrome%20%7C%20Edge-green" alt="Browser Support"/>
+  <img src="https://img.shields.io/badge/Browser-Chrome%20%7C%20Edge%20%7C%20Firefox-green" alt="Browser Support"/>
 </div>
 
 ---
@@ -31,6 +31,22 @@ A lightweight browser extension that monitors GitHub repositories and alerts you
 2. Open Chrome/Edge and navigate to `chrome://extensions/`
 3. Enable Developer mode
 4. Click "Load unpacked" and select the extension directory
+
+### Firefox
+
+1. Navigate to `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on**
+3. Select the `manifest.json` file from the extension directory
+
+> **Note for permanent Firefox installation:**
+> - For development/testing, use the temporary add-on method above
+> - For permanent installation, the extension needs to be signed by Mozilla
+> - Alternatively, use Firefox Developer Edition or Nightly with `xpinstall.signatures.required` set to `false` in `about:config`
+
+### Firefox Android (Experimental)
+
+1. Enable Developer options in Firefox for Android
+2. Connect via `adb` and use web-ext tool: `web-ext run -t firefox-android`
 5. Start tracking repositories
 
 ## Quick Start
@@ -51,11 +67,35 @@ Configure your preferences in settings. For best results, add a GitHub Personal 
 2. Generate a token with `public_repo` scope
 3. Add it in extension settings
 
-## Technical Stack
+## Technical Details
 
-Built with Manifest V3, Chrome Storage API, Chrome Alarms API, and GitHub REST API v3.
+**Built with:**
+- Manifest V3
+- Chrome Storage API
+- Chrome Alarms API
+- Chrome Notifications API
+- GitHub REST API v3
 
-## Rate Limits
+**Permissions:**
+- `storage` - Save repositories and settings
+- `notifications` - Display new issue alerts
+- `alarms` - Schedule periodic checks
+- `https://api.github.com/*` - Access GitHub API
+
+## File Structure
+
+```
+extension/
+├── manifest.json       # Extension configuration
+├── background.js       # Service worker
+├── storage.js         # Storage utilities
+├── github-api.js      # GitHub API integration
+├── popup.html/css/js  # Main interface
+├── settings.html/css/js # Settings page
+└── icons/             # Extension icons
+```
+
+## API Rate Limits
 
 | Authentication | Requests/Hour |
 |---------------|---------------|
