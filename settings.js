@@ -26,6 +26,16 @@ async function loadSettings() {
     // Set notification toggles
     document.getElementById('notificationsEnabled').checked = currentSettings.notificationsEnabled !== false;
     document.getElementById('soundEnabled').checked = currentSettings.soundEnabled !== false;
+
+    // Set theme toggle
+    const theme = currentSettings.theme || 'dark';
+    document.getElementById('themeToggle').checked = theme === 'light';
+    applyTheme(theme);
+}
+
+// Apply theme to document
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
 }
 
 // Setup event listeners
@@ -41,6 +51,14 @@ function setupEventListeners() {
 
     // Clear data
     document.getElementById('clearData').addEventListener('click', clearData);
+
+    // Theme toggle
+    document.getElementById('themeToggle').addEventListener('change', async (e) => {
+        const theme = e.target.checked ? 'light' : 'dark';
+        applyTheme(theme);
+        await Storage.setTheme(theme);
+        showToast(`Switched to ${theme} theme`, 'success');
+    });
 
     // Auto-save on interval change
     document.querySelectorAll('input[name="interval"]').forEach(radio => {
@@ -108,7 +126,8 @@ async function saveSettings() {
             githubToken: document.getElementById('githubToken').value.trim(),
             checkInterval: parseInt(document.querySelector('input[name="interval"]:checked').value),
             notificationsEnabled: document.getElementById('notificationsEnabled').checked,
-            soundEnabled: document.getElementById('soundEnabled').checked
+            soundEnabled: document.getElementById('soundEnabled').checked,
+            theme: document.getElementById('themeToggle').checked ? 'light' : 'dark'
         };
 
         // Save to storage

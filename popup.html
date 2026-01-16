@@ -6,6 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GitBell</title>
   <link rel="stylesheet" href="popup.css">
+  <script>
+    // Apply theme immediately to prevent flash of wrong theme
+    (async () => {
+      try {
+        const result = await chrome.storage.sync.get(['settings']);
+        const theme = result.settings?.theme || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
 </head>
 
 <body>
