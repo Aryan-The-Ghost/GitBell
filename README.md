@@ -73,5 +73,5 @@ MIT License
 ---
 
 <div align="center">
-  Made with ♥ for the open-source community
+  Made with <span style="color: red; font-size: 1.2em;">❤️</span> for the open-source community
 </div>
