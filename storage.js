@@ -1,6 +1,17 @@
 // Storage utility module for managing repositories, settings, and notification history
 
 const Storage = {
+  // Get theme preference
+  async getTheme() {
+    const settings = await this.getSettings();
+    return settings.theme || 'dark';
+  },
+
+  // Set theme preference
+  async setTheme(theme) {
+    await this.updateSettings({ theme });
+  },
+
   // Get all monitored repositories
   async getRepositories() {
     const result = await chrome.storage.sync.get(['repositories']);

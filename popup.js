@@ -4,12 +4,25 @@ let repositories = [];
 let stats = {};
 let notifications = [];
 
+// Apply theme immediately to prevent flash
+(async () => {
+    const theme = await Storage.getTheme();
+    document.documentElement.setAttribute('data-theme', theme);
+})();
+
 // Initialize popup
 document.addEventListener('DOMContentLoaded', async () => {
+    await loadTheme();
     await loadData();
     setupEventListeners();
     startAutoRefresh();
 });
+
+// Load and apply theme
+async function loadTheme() {
+    const theme = await Storage.getTheme();
+    document.documentElement.setAttribute('data-theme', theme);
+}
 
 // Load all data
 async function loadData() {

@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - GitBell</title>
     <link rel="stylesheet" href="settings.css">
+    <script>
+        // Apply theme immediately to prevent flash of wrong theme
+        (async () => {
+            try {
+                const result = await chrome.storage.sync.get(['settings']);
+                const theme = result.settings?.theme || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 </head>
 
 <body>
@@ -140,6 +152,36 @@
                             </div>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="soundEnabled" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appearance -->
+            <section class="settings-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" />
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <h2>Appearance</h2>
+                    </div>
+                </div>
+                <p class="section-description">
+                    Customize the look and feel of the extension.
+                </p>
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-option">
+                            <div class="toggle-info">
+                                <span class="toggle-label">Light Theme</span>
+                                <span class="toggle-description">Switch between dark and light mode</span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="themeToggle">
                                 <span class="slider"></span>
                             </label>
                         </label>
