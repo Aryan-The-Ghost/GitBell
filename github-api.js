@@ -1,6 +1,6 @@
 // GitHub API integration module
 
-export const GitHubAPI = {
+const GitHubAPI = {
     baseUrl: 'https://api.github.com',
 
     // Fetch issues for a repository
@@ -143,8 +143,3 @@ export const GitHubAPI = {
         return newIssues;
     }
 };
-
-// Also make available globally for non-module scripts (popup, settings pages)
-if (typeof globalThis !== 'undefined') {
-    globalThis.GitHubAPI = GitHubAPI;
-}

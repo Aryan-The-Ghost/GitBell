@@ -1,6 +1,6 @@
 // Storage utility module for managing repositories, settings, and notification history
 
-export const Storage = {
+const Storage = {
   // Get theme preference
   async getTheme() {
     const settings = await this.getSettings();
@@ -124,8 +124,3 @@ export const Storage = {
     return updated;
   }
 };
-
-// Also make available globally for non-module scripts (popup, settings pages)
-if (typeof globalThis !== 'undefined') {
-  globalThis.Storage = Storage;
-}
