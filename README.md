@@ -3,7 +3,7 @@
   
   # GitBell
   
-  Get notified when new issues are posted to GitHub repositories you track.
+  Never miss a GitHub issue again. Get instant notifications when new issues are posted to repositories you track.
   
   <img src="https://img.shields.io/badge/Manifest-V3-blue" alt="Manifest V3"/>
   <img src="https://img.shields.io/badge/Browser-Chrome%20%7C%20Edge-green" alt="Browser Support"/>
@@ -11,93 +11,60 @@
 
 ---
 
-## About
+## What is GitBell?
 
-GitBell is a browser extension that monitors GitHub repositories and sends instant notifications when new issues are created. Perfect for GSoC contributors, open-source maintainers, and developers who want to stay on top of repository activity.
+A lightweight browser extension that monitors GitHub repositories and alerts you the moment new issues appear. Built for developers who want to stay ahead in open-source contributions, GSoC applications, and project maintenance.
 
 ## Features
 
-- Real-time monitoring of multiple repositories
-- Browser notifications for new issues
-- Configurable check intervals (5-30 minutes)
-- GitHub API token support for higher rate limits
+- Real-time issue monitoring across multiple repositories
+- Instant browser notifications with direct links
 - Smart detection of beginner-friendly issues
-- Clean, minimalistic interface
-- Statistics dashboard
+- Configurable check intervals
+- Light and dark theme support
+- GitHub API token support for higher rate limits
+- Clean, minimal interface
 
 ## Installation
 
-### Chrome / Edge
+1. Download or clone this repository
+2. Open Chrome/Edge and navigate to `chrome://extensions/`
+3. Enable Developer mode
+4. Click "Load unpacked" and select the extension directory
+5. Start tracking repositories
 
-1. Navigate to `chrome://extensions/` or `edge://extensions/`
-2. Enable **Developer mode**
-3. Click **Load unpacked**
-4. Select the extension directory
+## Quick Start
 
-## Usage
-
-### Adding Repositories
-
-Click the extension icon and enter repositories in `owner/repository` format:
+Click the extension icon and add repositories in `owner/repo` format:
 
 ```
 facebook/react
+microsoft/vscode
 tensorflow/tensorflow
-kubernetes/kubernetes
 ```
 
-### Configuring Settings
+Configure your preferences in settings. For best results, add a GitHub Personal Access Token to increase your API rate limit from 60 to 5,000 requests per hour.
 
-Access settings via the gear icon to:
-- Add GitHub Personal Access Token (optional, increases rate limit from 60 to 5,000 requests/hour)
-- Set check interval
-- Configure notification preferences
-
-### Generating GitHub Token
+## GitHub Token Setup
 
 1. Visit [GitHub Token Settings](https://github.com/settings/tokens/new?scopes=public_repo&description=GitBell)
-2. Select `public_repo` scope
-3. Generate and copy token
-4. Paste in extension settings
+2. Generate a token with `public_repo` scope
+3. Add it in extension settings
 
-## Technical Details
+## Technical Stack
 
-**Built with:**
-- Manifest V3
-- Chrome Storage API
-- Chrome Alarms API
-- Chrome Notifications API
-- GitHub REST API v3
+Built with Manifest V3, Chrome Storage API, Chrome Alarms API, and GitHub REST API v3.
 
-**Permissions:**
-- `storage` - Save repositories and settings
-- `notifications` - Display new issue alerts
-- `alarms` - Schedule periodic checks
-- `https://api.github.com/*` - Access GitHub API
+## Rate Limits
 
-## File Structure
-
-```
-extension/
-├── manifest.json       # Extension configuration
-├── background.js       # Service worker
-├── storage.js         # Storage utilities
-├── github-api.js      # GitHub API integration
-├── popup.html/css/js  # Main interface
-├── settings.html/css/js # Settings page
-└── icons/             # Extension icons
-```
-
-## API Rate Limits
-
-| Authentication | Requests/Hour | Use Case |
-|---------------|---------------|----------|
-| No Token | 60 | 1-6 repositories |
-| With Token | 5,000 | Unlimited repositories |
+| Authentication | Requests/Hour |
+|---------------|---------------|
+| No Token | 60 |
+| With Token | 5,000 |
 
 ## Contributing
 
-Contributions are welcome. Feel free to open issues or submit pull requests.
+Contributions are welcome. Check out the issues tab for open tasks or submit your own improvements.
 
 ## License
 
@@ -106,5 +73,5 @@ MIT License
 ---
 
 <div align="center">
-  Made for the open-source community
+  Made with ♥ for the open-source community
 </div>
