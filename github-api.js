@@ -1,6 +1,6 @@
 // GitHub API integration module
 
-const GitHubAPI = {
+export const GitHubAPI = {
     baseUrl: 'https://api.github.com',
 
     // Fetch issues for a repository
